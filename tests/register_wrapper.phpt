@@ -1,13 +1,14 @@
 --TEST--
 Register save/restore wrapper
 --SKIPIF--
-<?php if (!extension_loaded("chiasm")) print "skip"; ?>
+<?php if(!extension_loaded('chiasm')) print 'skip'; ?>
 --FILE--
 <?php
-/*
+/**
  * Used registers should be pushed and popped.
  * Usage is either direct mentioning, or assignment for input/output purposes
  */
+
 $output=NULL;
 asm(";r9 r10
      mov rdx,123

@@ -1,11 +1,11 @@
 --TEST--
 Return value passthrough
 --SKIPIF--
-<?php if (!extension_loaded("chiasm")) print "skip"; ?>
+<?php if(!extension_loaded('chiasm')) print 'skip'; ?>
 --FILE--
 <?php
 declare(strict_types=1);
-/*
+/**
  * The inline assembly should have access to PHP's return zval via [rsi]
  */
 

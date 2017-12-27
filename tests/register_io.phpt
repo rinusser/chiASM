@@ -1,10 +1,10 @@
 --TEST--
 Register input/output assignments
 --SKIPIF--
-<?php if (!extension_loaded("chiasm")) print "skip"; ?>
+<?php if(!extension_loaded('chiasm')) print 'skip'; ?>
 --FILE--
 <?php
-/*
+/**
  * Up to 13 inputs/outputs should be assigned to GPRs, skipping rsp, rdi and rsi
  */
 
