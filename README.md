@@ -92,8 +92,18 @@ If the extension is loaded there's a new PHP function `asm`:
 
 `$code` is the Assembly code to execute, in Intel syntax (NASM is used to assemble it).
 
-`$inputs` is an optional array of input variables. They're passed by value into the Assembly code. Note that booleans
-and NULLs are encoded in a ZVAL's type field, so they currently can't be used as inputs.
+`$inputs` is an optional array of input variables. They're passed by value or by reference into the Assembly code.
+For example:
+
+    $in1=1;
+    $in2=2;
+
+    asm("mov r8,[rax]    ;copy $in1's value into r8
+         mov r9,[rax+8]  ;copy $in1's type into r9
+         mov r10,rbx     ;copy $in2's value into r10",
+        [&$in1,$in2]);   //pass $in1 by reference, $in2 by value
+
+Note that booleans and NULLs are differentiated in a ZVAL's type field, so they need to be passed as references.
 
 `$outputs` is an optional array of output variables. They're passed by reference into the Assembly code.
 

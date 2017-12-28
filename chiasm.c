@@ -96,7 +96,10 @@ PHP_FUNCTION(asm)
   int offset;
 
   if(zend_parse_parameters(ZEND_NUM_ARGS(),"s|hh",&code,&code_len,&inputs,&outputs)!=SUCCESS)
-    RETURN_FALSE;
+  {
+    str=strpprintf(0,"ERROR: could not parse parameters");
+    RETURN_STR(str);
+  }
 
   tc=0;
   if(inputs)
@@ -132,7 +135,13 @@ PHP_FUNCTION(asm)
       offset=tc;
       if(offset>4)
         offset+=3;
-      sprintf(inout_mov,"mov %s,0x%016lx\n",register_names[offset],inputs->arData[tc].val.value);
+
+      if(Z_ISREF(inputs->arData[tc].val))
+        sprintf(inout_mov,"mov %s,0x%016lx\n",register_names[offset],inputs->arData[tc].val.value.ptr+8);
+      else
+        sprintf(inout_mov,"mov %s,0x%016lx\n",register_names[offset],inputs->arData[tc].val.value);
+
+
       strcat(inout_movs,inout_mov);
       reg_mask|=1<<offset;
     }
@@ -246,8 +255,11 @@ PHP_MINFO_FUNCTION(chiasm)
 }
 /* }}} */
 
-ZEND_BEGIN_ARG_INFO(arginfo_asm, 0) //XXX this should list 2 more optional arguments, right?
-  ZEND_ARG_TYPE_INFO(0,"code",IS_STRING,0)
+ZEND_BEGIN_ARG_INFO(arginfo_asm,0)
+  //             byref,name,     type,     allow_null
+  ZEND_ARG_TYPE_INFO(0,"code",   IS_STRING,0)
+  ZEND_ARG_TYPE_INFO(0,"inputs", IS_ARRAY, 1)
+  ZEND_ARG_TYPE_INFO(0,"outputs",IS_ARRAY, 1)
 ZEND_END_ARG_INFO()
 
 
