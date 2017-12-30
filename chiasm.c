@@ -43,14 +43,20 @@ static unsigned int parse_registers(const char *str)
   return rv;
 }
 
+static void *get_zeroed_memory(unsigned int bytes)
+{
+  void *rv=emalloc(bytes);
+  memset(rv,0,bytes);
+  return rv;
+}
+
 
 static char *do_register_op(unsigned int field, int start, int end, int delta, const char *op)
 {
   int high=start>end?start:end;
   int low=start<end?start:end;
   int tc;
-  char *rv=emalloc(165);
-  memset(rv,0,165);
+  char *rv=get_zeroed_memory(165);
 
   for(tc=start;tc>=low&&tc<=high;tc+=delta)
   {
@@ -72,6 +78,39 @@ static char *push_registers(unsigned int field)
 static char *pop_registers(unsigned int field)
 {
   return do_register_op(field,15,0,-1,"pop ");
+}
+
+static unsigned int count_set_bits(unsigned int value)
+{
+  unsigned int rv=0;
+  while(value>0)
+  {
+    if(value%2>0)
+      rv++;
+    value>>=1;
+  }
+  return rv;
+}
+
+static char *do_stack_padding_op(unsigned int field, char *op)
+{
+  char *rv=get_zeroed_memory(16);
+  if(count_set_bits(field)%2==0)
+  {
+    strcat(rv,op);
+    strcat(rv," rsp,8");
+  }
+  return rv;
+}
+
+static char *pad_stack(unsigned int field)
+{
+  return do_stack_padding_op(field,"sub");
+}
+
+static char *unpad_stack(unsigned int field)
+{
+  return do_stack_padding_op(field,"add");
 }
 
 
@@ -171,13 +210,28 @@ PHP_FUNCTION(asm)
 section .text\n\
   global %s\n\
 %s:\n\
+  ;return register mask by default\n\
   mov qword [rsi],%d\n\
   mov qword [rsi+8],4\n\
+\n\
+;preserve used registers on stack\n\
 %s\n\
+\n\
+;align stack pointer, if necessary\n\
 %s\n\
+\n\
+;map inputs/outputs to registers\n\
+%s\n\
+\n\
+;inline code code\n\
   %s\n\
+\n\
+;reset stack pointer, if necessary\n\
 %s\n\
-  ret\n",fn_asm,fn_asm,reg_mask,push_registers(reg_mask),inout_movs,code,pop_registers(reg_mask));
+\n\
+;restore used registers\n\
+%s\n\
+  ret\n",fn_asm,fn_asm,reg_mask,push_registers(reg_mask),pad_stack(reg_mask),inout_movs,code,unpad_stack(reg_mask),pop_registers(reg_mask));
 
   fwrite(buf,1,strlen(buf),asmfile); //TODO: check return value
 

@@ -125,7 +125,7 @@ The other 3 GPRs (rsp, rsi and rdi) have special meanings:
 
 `rdi` points to the zend\_execute\_data context.
 
-`rsp` needs to be preseved, previous register values are saved/restored on the stack.
+`rsp` needs to be preserved, previous register values are saved/restored on the stack.
 
 ### Volatile Registers
 
@@ -136,14 +136,12 @@ Currently no other registers are be preserved.
 
 ### Stack Alignment
 
-Currently there's no automatic stack alignment. Whether rsp is aligned to e.g. 128 bits (for SSE stack moves) depends
-on the number of registers pushed to the stack. The internally generated code preamble is deterministic and the
-extension code itself gets invoked with rsp aligned, so once you fix the rsp alignment it will continue to work (with
-the exact same PHP binary).
+The generated assembly preamble will automatically align the stack to 128 bits. The first line of inline assembly code
+can assume that `rsp%16 == 0`. For example it's perfectly valid to have the first code line perform a 128bit-aligned
+AVX move like `MOVDQA`.
 
-Keep in mind the rsp register modification to align the stack pointer will mark the rsp register as volatile, thus
-triggering an additional stack move before your code is called if you hadn't already used rsp before. It's recommended
-to include "rsp" in the code first (e.g. in a comment line), then fix the alignment.
+The generated assembly trailer will undo the automatic alignment, i.e. the inline assembly code should leave rsp the way
+it found it.
 
 ### Example
 

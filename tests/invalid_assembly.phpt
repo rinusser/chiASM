@@ -11,5 +11,5 @@ Invalid Assembly
 echo var_export(asm('invalid statement'),true);
 ?>
 --EXPECT--
-/tmp/asm.generated.asm:9: error: parser: instruction expected
+/tmp/asm.generated.asm:19: error: parser: instruction expected
 false
