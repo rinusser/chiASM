@@ -268,7 +268,7 @@ section .text\n\
  */
 PHP_MINIT_FUNCTION(chiasm)
 {
-	return SUCCESS;
+  return SUCCESS;
 }
 /* }}} */
 
@@ -276,7 +276,7 @@ PHP_MINIT_FUNCTION(chiasm)
  */
 PHP_MSHUTDOWN_FUNCTION(chiasm)
 {
-	return SUCCESS;
+  return SUCCESS;
 }
 /* }}} */
 
@@ -285,9 +285,9 @@ PHP_MSHUTDOWN_FUNCTION(chiasm)
 PHP_RINIT_FUNCTION(chiasm)
 {
 #if defined(COMPILE_DL_CHIASM) && defined(ZTS)
-	ZEND_TSRMLS_CACHE_UPDATE();
+  ZEND_TSRMLS_CACHE_UPDATE();
 #endif
-	return SUCCESS;
+  return SUCCESS;
 }
 /* }}} */
 
@@ -295,7 +295,7 @@ PHP_RINIT_FUNCTION(chiasm)
  */
 PHP_RSHUTDOWN_FUNCTION(chiasm)
 {
-	return SUCCESS;
+  return SUCCESS;
 }
 /* }}} */
 
@@ -303,9 +303,9 @@ PHP_RSHUTDOWN_FUNCTION(chiasm)
  */
 PHP_MINFO_FUNCTION(chiasm)
 {
-	php_info_print_table_start();
-	php_info_print_table_header(2, "chiASM support", "enabled");
-	php_info_print_table_end();
+  php_info_print_table_start();
+  php_info_print_table_header(2, "chiASM support", "enabled");
+  php_info_print_table_end();
 }
 /* }}} */
 
@@ -328,16 +328,16 @@ const zend_function_entry chiasm_functions[] = {
 /* {{{ chiasm_module_entry
  */
 zend_module_entry chiasm_module_entry = {
-	STANDARD_MODULE_HEADER,
-	"chiASM",
-	chiasm_functions,
-	PHP_MINIT(chiasm),
-	PHP_MSHUTDOWN(chiasm),
-	PHP_RINIT(chiasm),
-	PHP_RSHUTDOWN(chiasm),
-	PHP_MINFO(chiasm),
-	PHP_CHIASM_VERSION,
-	STANDARD_MODULE_PROPERTIES
+  STANDARD_MODULE_HEADER,
+  "chiASM",
+  chiasm_functions,
+  PHP_MINIT(chiasm),
+  PHP_MSHUTDOWN(chiasm),
+  PHP_RINIT(chiasm),
+  PHP_RSHUTDOWN(chiasm),
+  PHP_MINFO(chiasm),
+  PHP_CHIASM_VERSION,
+  STANDARD_MODULE_PROPERTIES
 };
 /* }}} */
 

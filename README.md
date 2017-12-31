@@ -134,6 +134,11 @@ output GPRs will be pushed to the stack before your code, and popped from the st
 
 Currently no other registers are be preserved.
 
+Implicitly modified GPRs will not be detected, for example the `CPUID` instruction changes the rax-rdx registers by
+design. If you call such a function you'll have to manually mark those registers as volatile by including them in your
+inline assembly code somewhere. If you aren't already using those registers anyway (in which case they're already
+recognized as volatile) you can just add a comment line that lists the remaining registers.
+
 ### Stack Alignment
 
 The generated assembly preamble will automatically align the stack to 128 bits. The first line of inline assembly code

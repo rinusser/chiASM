@@ -1,6 +1,6 @@
 ARG_ENABLE("chiASM", "enable chiASM support", "no");
 
 if (PHP_CHIASM != "no") {
-	EXTENSION("chiasm", "chiasm.c", PHP_EXTNAME_SHARED, "/DZEND_ENABLE_STATIC_TSRMLS_CACHE=1");
+  EXTENSION("chiasm", "chiasm.c", PHP_EXTNAME_SHARED, "/DZEND_ENABLE_STATIC_TSRMLS_CACHE=1");
 }
 

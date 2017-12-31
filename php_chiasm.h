@@ -13,14 +13,14 @@
 extern zend_module_entry chiasm_module_entry;
 #define phpext_chiasm_ptr &chiasm_module_entry
 
-#define PHP_CHIASM_VERSION "0.06"
+#define PHP_CHIASM_VERSION "1.00"
 
 #ifdef PHP_WIN32
-#	define PHP_CHIASM_API __declspec(dllexport)
+# define PHP_CHIASM_API __declspec(dllexport)
 #elif defined(__GNUC__) && __GNUC__ >= 4
-#	define PHP_CHIASM_API __attribute__ ((visibility("default")))
+# define PHP_CHIASM_API __attribute__ ((visibility("default")))
 #else
-#	define PHP_CHIASM_API
+# define PHP_CHIASM_API
 #endif
 
 #ifdef ZTS
@@ -33,4 +33,4 @@ extern zend_module_entry chiasm_module_entry;
 ZEND_TSRMLS_CACHE_EXTERN()
 #endif
 
-#endif	/* PHP_CHIASM_H */
+#endif /* PHP_CHIASM_H */
