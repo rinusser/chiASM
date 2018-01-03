@@ -38,6 +38,11 @@ If the phrase is up for grabs I'm calling dibs.
 
 # Installation
 
+You can either compile this as a *static* extension into new `php` binaries, or compile it as a *shared* extension that
+can be loaded with the `extension=<file>` directive in PHP's .ini files.
+
+## Static Extension
+
 ### Prerequisites
 
 You'll need to extract the PHP sources somewhere, e.g. /usr/src/php7/. All paths in the installation instructions below
@@ -80,6 +85,61 @@ As of writing this it should output this:
     out3 should be false: false
 
 Check out demo.php for how this is done.
+
+## Shared Extension
+
+Please consider carefully whether you really want to do this. If you go this route on e.g. a web server the served PHP
+code gets access to the inline Assembly function.
+
+### Prerequisites
+
+You'll need:
+
+* PHP and the `phpize` tool installed, e.g. `phpize --help` should output its usage information
+* root/sudo access to install the new module globally
+* this extension's sources somewhere, the following commands are executed in that directory
+
+### Building/Installing
+
+Run these commands:
+
+    $ phpize && ./configure && make
+
+This should show a bit of output without any error messages, the end should say something like:
+
+    Build complete.
+    Don't forget to run 'make test'.
+
+The tests won't work yet, you still need to first install the module:
+
+    $ sudo make install
+
+and then include it by adding this line somewhere in the .ini file(s):
+
+    extension=chiasm.so
+
+The exact method of doing this depends on the OS, for example on Ubuntu 17.04 there's a /etc/php/7.0/cli/conf.d/
+directory that contains individual .ini files to add/configure modules for the CLI version of PHP. In there create a new
+file, chiasm.ini, and add the above line.
+
+### Verification
+
+After that the extension should be loaded and you can run the tests with:
+
+    $ make tests
+
+This should report all tests passed.
+
+If you added the extension to a web server (and you're really, really sure that's what you want), you may have to
+restart the web server before the module is available.
+
+The demo script should work too - currently it should output this:
+
+    $ php -f demo.php
+    result should be true: true
+    out1 should be 5<<3-6=34: 34
+    out2 should be 0.5*0.5=0.25: 0.25
+    out3 should be false: false
 
 
 # Usage
@@ -165,10 +225,8 @@ will output:
 
 # Tests
 
-Contains .phpt tests. Execute them in your PHP sources root by either running the entire test suite (`make test`, this
-will take a while), or just running this extension's tests:
-
-    $ make test TESTS=ext/chiasm
+This extension contains .phpt tests. How to execute them depends on whether you built a shared or static extension, see
+Installation above.
 
 All tests should pass.
 

@@ -48,9 +48,17 @@ return in the future.
 ### Validation
 
 Each commit into the `master` branch includes documentation (if it's a feature or changes the extension's limitations)
-and passes all tests. Tests are executed in the PHP sources root with:
+and passes all tests.
+
+Test execution depends on whether you're building a static extension:
 
     $ make test TESTS=ext/chiasm
+
+or a shared extension:
+
+    $ make test
+
+See the installation instructions in README.md for details.
 
 ### Documentation
 
