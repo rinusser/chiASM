@@ -5,7 +5,7 @@ declare(strict_types=1);
  *
  * requires PHP version 7.0+
  * @author Richard Nusser
- * @copyright 2017 Richard Nusser
+ * @copyright 2017-2018 Richard Nusser
  * @license GPLv3 (see http://www.gnu.org/licenses/)
  * @link https://github.com/rinusser/chiASM
  */

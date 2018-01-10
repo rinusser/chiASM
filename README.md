@@ -192,7 +192,7 @@ The other 3 GPRs (rsp, rsi and rdi) have special meanings:
 The asm() function will check your Assembly code for all used GPRs. This list of GPRs, in addition to all input and
 output GPRs will be pushed to the stack before your code, and popped from the stack after your code.
 
-Currently no other registers are be preserved.
+Currently no other registers are preserved.
 
 Implicitly modified GPRs will not be detected, for example the `CPUID` instruction changes the rax-rdx registers by
 design. If you call such a function you'll have to manually mark those registers as volatile by including them in your
@@ -245,7 +245,7 @@ USE AT YOUR OWN RISK!
 
 ### Copyright
 
-Copyright (C) 2017 Richard Nusser
+Copyright (C) 2017-2018 Richard Nusser
 
 ### License
 
